@@ -1,0 +1,1214 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=utf-8">
+<meta name=Generator content="Microsoft Word 15 (filtered)">
+<style>
+<!--
+ /* Font Definitions */
+ @font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Aptos;
+	panose-1:2 11 0 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:"Aptos Display";
+	panose-1:2 11 0 4 2 2 2 2 2 4;}
+@font-face
+	{font-family:Consolas;
+	panose-1:2 11 6 9 2 2 4 3 2 4;}
+ /* Style Definitions */
+ p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+h1
+	{mso-style-link:"Heading 1 Char";
+	margin-top:.25in;
+	margin-right:0in;
+	margin-bottom:4.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:20.0pt;
+	font-family:"Aptos Display",sans-serif;
+	color:#0F4761;
+	font-weight:normal;}
+h2
+	{mso-style-link:"Heading 2 Char";
+	margin-top:8.0pt;
+	margin-right:0in;
+	margin-bottom:4.0pt;
+	margin-left:0in;
+	page-break-after:avoid;
+	font-size:16.0pt;
+	font-family:"Aptos Display",sans-serif;
+	color:#0F4761;
+	font-weight:normal;}
+p.MsoBodyText, li.MsoBodyText, div.MsoBodyText
+	{margin-top:9.0pt;
+	margin-right:0in;
+	margin-bottom:9.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+p.FirstParagraph, li.FirstParagraph, div.FirstParagraph
+	{mso-style-name:"First Paragraph";
+	margin-top:9.0pt;
+	margin-right:0in;
+	margin-bottom:9.0pt;
+	margin-left:0in;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+span.Heading1Char
+	{mso-style-name:"Heading 1 Char";
+	mso-style-link:"Heading 1";
+	font-family:"Aptos Display",sans-serif;
+	color:#0F4761;}
+span.Heading2Char
+	{mso-style-name:"Heading 2 Char";
+	mso-style-link:"Heading 2";
+	font-family:"Aptos Display",sans-serif;
+	color:#0F4761;}
+span.VerbatimChar
+	{mso-style-name:"Verbatim Char";
+	mso-style-link:"Source Code";
+	font-family:Consolas;}
+p.SourceCode, li.SourceCode, div.SourceCode
+	{mso-style-name:"Source Code";
+	mso-style-link:"Verbatim Char";
+	margin-top:0in;
+	margin-right:0in;
+	margin-bottom:10.0pt;
+	margin-left:0in;
+	word-break:break-all;
+	font-size:12.0pt;
+	font-family:"Aptos",sans-serif;}
+.MsoChpDefault
+	{font-family:"Aptos",sans-serif;}
+.MsoPapDefault
+	{margin-bottom:10.0pt;}
+ /* Page Definitions */
+ @page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+ /* List Definitions */
+ ol
+	{margin-bottom:0in;}
+ul
+	{margin-bottom:0in;}
+-->
+</style>
+
+</head>
+
+<body lang=EN-US link="#156082" vlink="#96607D" style='word-wrap:break-word'>
+
+<div class=WordSection1>
+
+<h1><a name=functions-and-modules-a-study-guide></a><a name=content></a><a
+name=header></a><span lang=EN>Functions and Modules: A Study Guide</span></h1>
+
+<h2><a name=introduction><span lang=EN>Introduction</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>In Python programming, large problems are
+made easier by breaking them into smaller, more manageable pieces called <i>functions</i>.
+A function is like a recipe or a machine: it takes inputs (ingredients), does
+some processing, and produces outputs. This <b>divide-and-conquer</b> approach
+helps us avoid rewriting the same code over and over, and makes programs easier
+to understand and maintain. Each function can be used in multiple places in the
+code, so changing the function changes <i>all</i> calls to it. For example, if
+we have one function that formats dates in one style, updating that function
+updates every part of the program that displays dates.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Consider building a toy with LEGO blocks.
+Instead of molding the entire toy in one piece, you build subassemblies like
+wheels and body, then put them together. Each subassembly is like a function:
+it is made once but can be attached in many ways. In code, a function might
+print a greeting or compute a math result, and we can <b>“attach” (call)</b> it
+whenever needed. This makes complex programs simpler, because you solve and
+test each piece separately before combining them.</span></p>
+
+<h2><a name=defining-functions><span lang=EN>Defining Functions</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>In Python, a function definition starts
+with the </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def</span></span><span
+lang=EN> keyword, followed by a name and a list of parameters in parentheses.
+The code block inside the function is indented. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def greet(name):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+message = &quot;Hello, &quot; + name + &quot;!&quot;</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(message)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Alice&quot;)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>We explain each line:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+greet(name):</span></span><span lang=EN> creates a function named </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN> that takes one parameter called </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>name</span></span><span lang=EN>. The </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def</span></span><span
+lang=EN> keyword signals the start of a function definition. This line tells
+Python: <i>“Define a new function called </i></span><span class=VerbatimChar><i><span
+lang=EN style='font-size:11.0pt'>greet</span></i></span><i><span lang=EN> that
+needs one piece of information, called </span></i><span class=VerbatimChar><i><span
+lang=EN style='font-size:11.0pt'>name</span></i></span><i><span lang=EN>.”</span></i><span
+lang=EN><br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>message
+= &quot;Hello, &quot; + name + &quot;!&quot;</span></span><span lang=EN> is
+inside the function (indented). It concatenates the string </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>&quot;Hello, &quot;</span></span><span
+lang=EN> with the value of </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>name</span></span><span lang=EN> and an exclamation
+mark, storing the result in a variable </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>message</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(message)</span></span><span
+lang=EN> is still inside the function. It tells Python to display the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>message</span></span><span
+lang=EN> on the screen. In our example, if </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>name</span></span><span lang=EN> is </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>&quot;Alice&quot;</span></span><span
+lang=EN>, this prints </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>&quot;Hello, Alice!&quot;</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Alice&quot;)</span></span><span
+lang=EN> is a <b>function call</b>. It tells Python to run the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN> function, giving it the string </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>&quot;Alice&quot;</span></span><span lang=EN>
+as the </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>name</span></span><span
+lang=EN> input. When called, the code inside </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>greet</span></span><span lang=EN> runs: it
+sets </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>message</span></span><span
+lang=EN> to </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>&quot;Hello, Alice!&quot;</span></span><span lang=EN> and then prints
+it.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Notice that once we define </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN>, we can call it multiple times with different names. It's like
+building a machine that prints greetings: we load a name (like flipping a
+switch with different labels), and it runs the same process. If we want to
+change how greetings are printed (for example, add <b>“Welcome”</b> instead of <b>“Hello”</b>),
+we change the code in </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>greet</span></span><span lang=EN> and every call
+automatically uses the new behavior. This avoids repeating code and ensures
+consistency.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In technical terms, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def greet(name):</span></span><span
+lang=EN> defines a function object and assigns it to the name </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN> in the current scope. Inside the function, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>name</span></span><span
+lang=EN> is a <i>local variable</i> that gets its value from the caller. When
+the </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN> function runs, Python creates a new local namespace for it; </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>message</span></span><span
+lang=EN> lives in that local scope and is discarded when the function finishes.
+This local isolation is why variables inside a function do not conflict with
+names outside the function.</span></p>
+
+<h2><a name=functions-with-multiple-parameters><span lang=EN>Functions with
+Multiple Parameters</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>Functions can take more than one
+parameter. The parameters are listed in the parentheses, separated by commas.
+Each parameter is like a separate input to the function. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def add(a, b):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+result = a + b</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;Sum is&quot;, result)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add(3,
+5)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Line-by-line explanation:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+add(a, b):</span></span><span lang=EN> defines a function named </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add</span></span><span
+lang=EN> with two parameters </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>a</span></span><span lang=EN> and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>b</span></span><span
+lang=EN>. These could be any values we provide when we call </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add</span></span><span
+lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>result
+= a + b</span></span><span lang=EN> inside the function, this computes the sum
+of </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>a</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>b</span></span><span lang=EN> and stores it in </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>result</span></span><span
+lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Sum
+is&quot;, result)</span></span><span lang=EN> prints out the message and the
+computed sum.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add(3,
+5)</span></span><span lang=EN> calls </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>add</span></span><span lang=EN> with </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>a=3</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>b=5</span></span><span lang=EN>, causing it to print </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>Sum is 8</span></span><span
+lang=EN>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Here the function </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add</span></span><span
+lang=EN> was called with two arguments. We could call it with different
+numbers: </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add(10,
+20)</span></span><span lang=EN> would print </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>Sum is 30</span></span><span lang=EN>. The
+order matters: </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>add(a, b)</span></span><span lang=EN> means the first argument goes to </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>a</span></span><span
+lang=EN>, the second to </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>b</span></span><span lang=EN>. Think of </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add</span></span><span
+lang=EN> as a machine that requires exactly two parts to work.</span></p>
+
+<p class=MsoBodyText><i><span lang=EN>A real-world analogy:</span></i><span
+lang=EN> imagine a function as a vending machine that needs <b>two coins</b>
+(inputs) to dispense a product (output). If you insert the coins in the order
+the machine expects, it delivers the correct item. If you swap their order, it
+won't work (just like arguments in a function call). In our </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add</span></span><span
+lang=EN> example, swapping the arguments wouldn’t change the sum (</span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add(3, 5)</span></span><span
+lang=EN> vs. </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>add(5, 3)</span></span><span lang=EN> both give 8), but other functions
+could behave differently depending on order.</span></p>
+
+<h2><a name=random-number-generation><span lang=EN>Random-Number Generation</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>The Python Standard Library includes a </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>random</span></span><span
+lang=EN> module for generating pseudo-random numbers. To use it, we must write </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import random</span></span><span
+lang=EN>. Then we can call functions like </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>random.randint(a, b)</span></span><span
+lang=EN> to get a random integer <b>N</b> such that </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>a &lt;= N &lt;= b</span></span><span
+lang=EN>. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>import random</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>die_roll
+= random.randint(1, 6)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Rolled
+a die, got&quot;, die_roll)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>import random</span></span><span lang=EN> loads
+the random-number generation module into our program. (Modules will be
+explained more later.)<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>random.randint(1,
+6)</span></span><span lang=EN> asks for a random integer from 1 through 6,
+inclusive. This simulates rolling a six-sided die. The result is stored in </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>die_roll</span></span><span
+lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Rolled
+a die, got&quot;, die_roll)</span></span><span lang=EN> shows the outcome on
+the screen. If it printed “Rolled a die, got 4”, that means our “dice” landed
+on 4.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Because computers are deterministic, the
+numbers from </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>random</span></span><span lang=EN> are not truly random but follow a
+long, complicated sequence. For most games and simulations they seem random
+enough. You can think of </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>randint(1,6)</span></span><span lang=EN> exactly like <b>shaking
+a real die</b> and seeing which face is up. If you use </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>random.seed(x)</span></span><span
+lang=EN>, you can make the sequence repeatable, like using the same dice
+sequence every time.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Random numbers let us simulate chance events
+or create unpredictable behavior. We will use this idea in the next section to
+build a little game. This approach is common in programming: rely on the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>random</span></span><span
+lang=EN> module (or other standard library modules) to avoid writing your own
+complex algorithms. It saves work and leverages well-tested code.</span></p>
+
+<h2><a name=case-study-a-game-of-chance><span lang=EN>Case Study: A Game of
+Chance</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>To practice functions and randomness,
+let's simulate a simple game of chance: rolling <b>two dice</b> and checking
+the sum. For example, in some games, rolling a 7 or 11 wins immediately (like
+the first roll of craps). We'll write a function to do this:</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>import random</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+roll_two_dice():</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    die1
+= random.randint(1, 6)  # roll first die</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    die2
+= random.randint(1, 6)  # roll second die</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+total = die1 + die2</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(f&quot;Rolled: {die1} + {die2} = {total}&quot;)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+return total</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'># Play
+one round</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>outcome
+= roll_two_dice()</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>if
+outcome == 7 or outcome == 11:</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;You win!&quot;)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>else:</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;Try again.&quot;)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Explanation:<br>
+- We </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import
+random</span></span><span lang=EN> again (at top) to use dice rolls.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+roll_two_dice():</span></span><span lang=EN> defines a function with no
+parameters that will simulate rolling two dice.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>die1 =
+random.randint(1, 6)</span></span><span lang=EN> rolls the first die and stores
+the result in </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>die1</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>die2 =
+random.randint(1, 6)</span></span><span lang=EN> rolls the second die and
+stores it in </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>die2</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>total
+= die1 + die2</span></span><span lang=EN> adds the two die values.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(f&quot;Rolled:
+{die1} + {die2} = {total}&quot;)</span></span><span lang=EN> shows the dice and
+their sum. The </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>f-string</span></span><span lang=EN> formats the values into the
+string.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>return
+total</span></span><span lang=EN> sends the sum out of the function so we can
+use it afterwards.<br>
+- After defining the function, we call it with </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>outcome = roll_two_dice()</span></span><span
+lang=EN>. The sum of the two dice is stored in </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>outcome</span></span><span lang=EN>.<br>
+- The </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>if</span></span><span
+lang=EN> statement checks if </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>outcome</span></span><span lang=EN> is 7 or 11. If so,
+it prints <b>“You win!”</b>; otherwise it prints <b>“Try again.”</b>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>This mini case study uses functions, random
+numbers, conditionals, and return values all together. It shows how to simulate
+chance (dice rolls) and make decisions based on the result. Many games and
+simulations use exactly this pattern: roll, check conditions, and respond.
+Working through this example reinforces how functions break the problem into
+clear steps.</span></p>
+
+<h2><a name=python-standard-library><span lang=EN>Python Standard Library</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>The Python Standard Library is a
+collection of modules and packages that come with Python. It offers a wide
+range of pre-built functionality, such as math, random, file I/O, data
+manipulation, web protocols, and more. In other words, it's like a giant toolbox
+that avoids “reinventing the wheel”. Instead of writing everything from
+scratch, we import these modules and use their functions. For example, we
+already used </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>random</span></span><span lang=EN> and will soon use </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>statistics</span></span><span lang=EN> from the standard library.</span></p>
+
+<p class=MsoBodyText><span lang=EN>The standard library is very extensive: it
+provides modules for tasks from text processing and regular expressions to
+networking and databases. For instance, the </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>datetime</span></span><span lang=EN> module
+helps with dates and times, and </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>math</span></span><span lang=EN> offers advanced math
+functions. Using the standard library is a best practice in software
+engineering: it saves time, reduces bugs (since these modules are tested by
+experts), and makes code more portable (because it works the same on any
+machine). Think of the standard library as built-in apps on your phone: ready
+to use whenever you need them.</span></p>
+
+<h2><a name=math-module-functions><span lang=EN>math Module Functions</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>The </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>math</span></span><span lang=EN> module
+provides mathematical functions and constants, like square root, trigonometry,
+and </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>pi</span></span><span
+lang=EN>. To use it, we write </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>import math</span></span><span lang=EN>. For example,
+let's compute the length of the hypotenuse of a right triangle using the
+Pythagorean theorem (c² = a² + b²):</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>import math</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+hypotenuse_length(x, y):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+length = math.sqrt(x*x + y*y)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+return length</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(hypotenuse_length(3,
+4))  # Expect 5</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(math.pi) 
+# The constant pi (3.14159...)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Line-by-line:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import
+math</span></span><span lang=EN> loads the math module.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+hypotenuse_length(x, y):</span></span><span lang=EN> defines a function with
+parameters </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>y</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>length
+= math.sqrt(x*x + y*y)</span></span><span lang=EN> calls </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.sqrt</span></span><span
+lang=EN> to compute the square root. According to the math documentation, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.sqrt(x)</span></span><span
+lang=EN> returns the square root of <i>x</i>. Here we calculate </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>sqrt(x^2 + y^2)</span></span><span
+lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>return
+length</span></span><span lang=EN> gives back the computed hypotenuse length to
+the caller.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(hypotenuse_length(3,
+4))</span></span><span lang=EN> calls our function. For sides 3 and 4, the
+hypotenuse is 5, so it should print </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>5</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(math.pi)</span></span><span
+lang=EN> prints the value of </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>math.pi</span></span><span lang=EN>, the mathematical
+constant π (pi). The math module makes this constant available.</span></p>
+
+<p class=MsoBodyText><span lang=EN>By using </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>math.sqrt</span></span><span lang=EN> and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.pi</span></span><span
+lang=EN>, we leverage efficient, tested code instead of writing our own
+square-root calculation or defining pi. This illustrates how modules help reuse
+capabilities. The </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>math</span></span><span lang=EN> module is essentially
+a library of optimized functions, so it is very fast and accurate. In software
+engineering terms, using </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>math</span></span><span lang=EN> is a clear example of
+code reuse and modular design.</span></p>
+
+<h2><a name=X17bdc16249499fc65aecef19ff9192ecf6e2a14><span lang=EN>Using
+IPython Tab Completion for Discovery</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>When working interactively (for example,
+in IPython or Jupyter), pressing the <b>Tab</b> key can help discover available
+functions and methods. For instance, if you type </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.</span></span><span
+lang=EN> and then Tab, the interpreter will list all names in the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math</span></span><span
+lang=EN> module. This is a quick way to find functions you might need.
+Similarly, you can call </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>help(math.sqrt)</span></span><span lang=EN> or use the
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>dir()</span></span><span
+lang=EN> function on any object to see its attributes. Tab completion is like
+having an auto-complete assistant: it helps you explore modules without having
+to memorize every function.</span></p>
+
+<h2><a name=default-parameter-values><span lang=EN>Default Parameter Values</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>Functions in Python can have default
+values for parameters. This means some parameters are optional in a call. If
+the caller omits that argument, the default is used. The Python tutorial says: <i>“The
+most useful form is to specify a default value for one or more arguments. This
+creates a function that can be called with fewer arguments than it is defined
+to allow”</i>. For example:</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def greet(name, greeting=&quot;Hello&quot;):</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(greeting + &quot;, &quot; + name + &quot;!&quot;)</span></span><span
+lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Bob&quot;)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Eva&quot;,
+&quot;Hi&quot;)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Explanation:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+greet(name, greeting=&quot;Hello&quot;):</span></span><span lang=EN> defines
+two parameters: </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>name</span></span><span lang=EN> (required) and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greeting</span></span><span
+lang=EN> (with default </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>&quot;Hello&quot;</span></span><span lang=EN>). If the
+caller provides only one argument, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>greeting</span></span><span lang=EN> becomes </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>&quot;Hello&quot;</span></span><span
+lang=EN> by default.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(greeting
++ &quot;, &quot; + name + &quot;!&quot;)</span></span><span lang=EN> prints a
+personalized greeting using the </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>greeting</span></span><span lang=EN> parameter
+(default or caller-provided).<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Bob&quot;)</span></span><span
+lang=EN> calls </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>greet</span></span><span lang=EN> with </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>name=&quot;Bob&quot;</span></span><span
+lang=EN>. Since no greeting was given, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>greeting</span></span><span lang=EN> is the
+default </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>&quot;Hello&quot;</span></span><span
+lang=EN>, so it prints </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>Hello, Bob!</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet(&quot;Eva&quot;,
+&quot;Hi&quot;)</span></span><span lang=EN> calls </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greet</span></span><span
+lang=EN> with </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>name=&quot;Eva&quot;</span></span><span lang=EN> and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>greeting=&quot;Hi&quot;</span></span><span
+lang=EN>. It prints </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>Hi, Eva!</span></span><span lang=EN> because we
+overrode the default.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Default values save us from writing multiple
+similar functions or code paths. In everyday terms, think of default parameters
+like optional <b>toppings on a sandwich</b>: if you don't specify them, the
+chef adds a standard topping automatically. The important detail is that
+default values are evaluated when the function is defined, not each time it is
+called. This usually doesn’t matter for immutable defaults (like numbers or
+strings), but it can lead to surprising behavior if the default is a mutable
+object (like a list) which gets shared across calls. For example, using a list
+as a default could cause all calls without an argument to use the <i>same</i>
+list, accumulating changes. (To avoid that, use a default of </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>None</span></span><span
+lang=EN> and create a new list inside the function.)</span></p>
+
+<h2><a name=keyword-arguments><span lang=EN>Keyword Arguments</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>In addition to positional arguments
+(which must be in order), Python functions can be called with <b>keyword
+arguments</b>. This means you can specify which parameter you are assigning a
+value to, by name: </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>func(arg_name=value)</span></span><span lang=EN>.
+Keyword arguments improve readability, especially when functions have many
+parameters. For example, the tutorial shows </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>parrot(voltage=1000)</span></span><span
+lang=EN> where </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>voltage</span></span><span lang=EN> is the parameter name.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Here's a simple illustration:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def describe_pet(animal_type, pet_name):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(f&quot;I have a {animal_type} named {pet_name}.&quot;)</span></span><span
+lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>describe_pet(animal_type=&quot;hamster&quot;,
+pet_name=&quot;Harry&quot;)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>describe_pet(pet_name=&quot;Willow&quot;,
+animal_type=&quot;cat&quot;)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- The function </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>describe_pet(animal_type,
+pet_name)</span></span><span lang=EN> takes two parameters.<br>
+- The call </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>describe_pet(animal_type=&quot;hamster&quot;,
+pet_name=&quot;Harry&quot;)</span></span><span lang=EN> uses keyword arguments:
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>animal_type</span></span><span
+lang=EN> gets </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>&quot;hamster&quot;</span></span><span lang=EN>, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>pet_name</span></span><span
+lang=EN> gets </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>&quot;Harry&quot;</span></span><span lang=EN>. Order doesn’t matter
+when using names.<br>
+- The call </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>describe_pet(pet_name=&quot;Willow&quot;,
+animal_type=&quot;cat&quot;)</span></span><span lang=EN> still works even
+though we swapped the order. Each keyword is matched by name.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Using keywords can make code
+self-documenting: you see at a glance what each argument means. However,
+positional arguments (without names) must come before keyword arguments in a
+call, and each parameter should receive a value only once (you can't do something
+like </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x=5,
+x=10</span></span><span lang=EN> simultaneously). Keyword args are especially
+useful when combined with default values, since you can skip optional ones or
+specify just the ones you want. The tutorial notes that keyword arguments must
+match the function’s parameter names.</span></p>
+
+<h2><a name=arbitrary-argument-lists><span lang=EN>Arbitrary Argument Lists</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>Sometimes we don't know in advance how
+many arguments a function will get. Python allows this with </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>*args</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>**kwargs</span></span><span lang=EN>. If a parameter starts with a
+single star (</span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>*args</span></span><span lang=EN>), it collects any extra positional
+arguments into a tuple. If a parameter starts with double stars (</span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>**kwargs</span></span><span
+lang=EN>), it collects extra keyword arguments into a dictionary. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def make_pizza(size, *toppings):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(f&quot;Making a {size}-inch pizza with the following toppings:&quot;)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    for
+topping in toppings:</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>       
+print(f&quot; - {topping}&quot;)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>make_pizza(12,
+&quot;pepperoni&quot;, &quot;mushrooms&quot;, &quot;onions&quot;)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Explanation:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+make_pizza(size, *toppings):</span></span><span lang=EN> has one regular
+parameter </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>size</span></span><span
+lang=EN> and then </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>*toppings</span></span><span lang=EN>. Any additional
+positional arguments are packed into a tuple named </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>toppings</span></span><span
+lang=EN>.<br>
+- When we call </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>make_pizza(12, &quot;pepperoni&quot;, &quot;mushrooms&quot;,
+&quot;onions&quot;)</span></span><span lang=EN>, inside the function </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>size</span></span><span
+lang=EN> is </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>12</span></span><span lang=EN> and </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>toppings</span></span><span lang=EN> is the
+tuple </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>(&quot;pepperoni&quot;,
+&quot;mushrooms&quot;, &quot;onions&quot;)</span></span><span lang=EN>.<br>
+- The </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>for
+topping in toppings:</span></span><span lang=EN> loop then iterates over each
+topping in the tuple, printing them.</span></p>
+
+<p class=MsoBodyText><span lang=EN>We could also use </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>**kwargs</span></span><span
+lang=EN> to accept any number of keyword arguments. For instance:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def build_profile(first, last, **user_info):</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+profile = {&quot;first_name&quot;: first, &quot;last_name&quot;: last}</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    for
+key, value in user_info.items():</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>       
+profile[key] = value</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+return profile</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>user_profile
+= build_profile(&quot;albert&quot;, &quot;einstein&quot;,
+location=&quot;princeton&quot;, field=&quot;physics&quot;)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(user_profile)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>def build_profile(first, last, **user_info):</span></span><span
+lang=EN> defines </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>user_info</span></span><span lang=EN> to collect extra
+named arguments into a dictionary.<br>
+- Calling </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>build_profile(&quot;albert&quot;,
+&quot;einstein&quot;, location=&quot;princeton&quot;,
+field=&quot;physics&quot;)</span></span><span lang=EN> sets </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>first</span></span><span
+lang=EN> to </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>'albert'</span></span><span lang=EN>, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>last</span></span><span lang=EN> to </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>'einstein'</span></span><span
+lang=EN>, and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>user_info</span></span><span lang=EN> becomes </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>{'location':
+'princeton', 'field': 'physics'}</span></span><span lang=EN>.<br>
+- The function then builds a profile dictionary including those extra fields.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In summary, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>*args</span></span><span lang=EN> and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>**kwargs</span></span><span
+lang=EN> give functions flexibility: they can handle any number of inputs. This
+is like packing as many guests into a car as will fit (</span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>*args</span></span><span
+lang=EN>) and accepting any labeled instructions (</span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>**kwargs</span></span><span
+lang=EN>). According to the tutorial, parameters of the form </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>*name</span></span><span
+lang=EN> and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>**name</span></span><span lang=EN> must occur in that order and gather
+extra arguments into a tuple or dict.</span></p>
+
+<h2><a name=methods-functions-that-belong-to-objects><span lang=EN>Methods:
+Functions That Belong to Objects</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>In object-oriented terms, a <i>method</i>
+is a function that belongs to an object (an instance of a class). For example,
+strings and lists have methods. A method is called using the syntax </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>object.method()</span></span><span
+lang=EN>. For instance:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>my_list = [1, 2, 3]</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_list.append(4)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(my_list) 
+# [1, 2, 3, 4]</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_str =
+&quot;hello&quot;</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(my_str.upper()) 
+# &quot;HELLO&quot;</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- Here </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>append</span></span><span lang=EN> is a method
+of the list </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>my_list</span></span><span lang=EN>. Calling </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_list.append(4)</span></span><span
+lang=EN> adds the element 4 to the end of the list.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>upper</span></span><span
+lang=EN> is a method of the string </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>my_str</span></span><span lang=EN>. Calling </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_str.upper()</span></span><span
+lang=EN> returns a new string </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>&quot;HELLO&quot;</span></span><span lang=EN>, the
+uppercase version of </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>my_str</span></span><span lang=EN>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Under the hood, methods are still functions.
+The syntax </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_list.append(4)</span></span><span
+lang=EN> is essentially calling the function </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>append</span></span><span lang=EN> with </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_list</span></span><span
+lang=EN> as its first argument. The key idea is that methods operate on the
+object before the dot. You can think of a method like a verb associated with an
+object (noun). In a vehicle analogy, the car is the object, and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>car.start()</span></span><span
+lang=EN> is a method to start it. As the documentation says, <i>“A method is a
+function that ‘belongs’ to an object”</i>.</span></p>
+
+<h2><a name=scope-rules><span lang=EN>Scope Rules</span></a></h2>
+
+<p class=FirstParagraph><i><span lang=EN>Scope</span></i><span lang=EN> refers
+to where a variable name is visible or accessible. In Python, a function has
+its own <b>local</b> scope. Variables defined inside a function exist only
+inside that function. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>x = 10</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+foo():</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    x =
+5</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;Inside foo, x =&quot;, x)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>foo()</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Outside
+foo, x =&quot;, x)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- We set </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>x = 10</span></span><span lang=EN> at the top
+level (global scope).<br>
+- Inside </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>foo()</span></span><span
+lang=EN>, we assign </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>x = 5</span></span><span lang=EN>. This </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN> is local to </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>foo</span></span><span lang=EN>. It does not change
+the global </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN>.<br>
+- Calling </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>foo()</span></span><span
+lang=EN> prints </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>&quot;Inside foo, x = 5&quot;</span></span><span lang=EN>.<br>
+- After calling </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>foo</span></span><span lang=EN>, printing </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN> outside still shows </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>10</span></span><span lang=EN>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>This demonstrates that the assignment </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x = 5</span></span><span
+lang=EN> inside </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>foo</span></span><span lang=EN> does not affect the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN> outside. Python’s rule is: assignments always go into the current
+(innermost) scope. The local </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>x</span></span><span lang=EN> in </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>foo</span></span><span
+lang=EN> <b>shadows</b> the global </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>x</span></span><span lang=EN> while </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>foo</span></span><span
+lang=EN> runs, and then goes away. If you need to assign to the global </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN> inside a function, you must use the </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>global</span></span><span lang=EN> keyword
+(which is usually discouraged). Similarly, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>nonlocal</span></span><span lang=EN> can
+access variables in an enclosing function’s scope.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In other words, when you refer to a name
+inside a function, Python first looks in the local names, then in any enclosing
+names, then in the global (module) names, and finally in built-in names. This
+is called the <i>LEGB rule</i>. Understanding scope is crucial to avoid
+confusion about which variable is being used or modified.</span></p>
+
+<h2><a name=import-a-deeper-look><span lang=EN>import: A Deeper Look</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>The </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>import</span></span><span lang=EN> statement
+brings code from another module into the current namespace. For example, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import math</span></span><span
+lang=EN> loads the math module and lets you use its functions with the prefix </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.</span></span><span
+lang=EN>. There are variations:<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import
+module</span></span><span lang=EN> (e.g., </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>import math</span></span><span lang=EN>) makes
+the module name available.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>from
+module import name</span></span><span lang=EN> (e.g., </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>from math import sqrt</span></span><span
+lang=EN>) brings a specific name into the current namespace, so you can use </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>sqrt()</span></span><span
+lang=EN> directly.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>from
+module import *</span></span><span lang=EN> (not recommended) imports all
+public names from the module.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Imagine imports like shopping for tools: </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>import math</span></span><span
+lang=EN> means you get the entire math toolbox, so you must prefix functions
+with </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math.</span></span><span
+lang=EN>. Using </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>from math import sqrt</span></span><span lang=EN> is like taking only
+the <b>“square root”</b> tool out of the toolbox so you can use it directly.
+This saves you from carrying all tools if you need just one.</span></p>
+
+<p class=MsoBodyText><span lang=EN>When Python executes an import, it searches
+for the module in a list of directories (</span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>sys.path</span></span><span lang=EN>). The
+first time a module is imported, its code runs and a module object is created.
+Subsequent imports reuse the already-loaded module (they do not re-run the
+module code). You can also import <b>packages</b> (directories with </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>__init__.py</span></span><span
+lang=EN> files). For example, </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>import sound.effects.echo</span></span><span lang=EN>
+would load that submodule; whereas </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>from sound.effects import echo</span></span><span
+lang=EN> would make it available as </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>echo</span></span><span lang=EN>. Each form of
+import is a way to access code in other files and reuse functionality.</span></p>
+
+<h2><a name=Xe47a909a57e4e4b50adca39bcd4bc1d62526ec4><span lang=EN>Passing
+Arguments to Functions: A Deeper Look</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>When we call a function with arguments,
+Python passes references to the objects, not copies of their values. The
+tutorial clarifies: <i>arguments are passed by value, where the value is an
+object reference</i>. What this means is:<br>
+- If you pass a mutable object (like a list or dict) to a function and modify
+it inside, the change will be seen outside the function.<br>
+- If you pass an immutable object (like an int or string) and try to modify it
+inside, you are actually creating a new object in the local scope; the original
+outside remains unchanged.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Example of mutable vs immutable:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def add_element(a_list):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+a_list.append(100)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>my_list
+= [1, 2, 3]</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>add_element(my_list)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(my_list) 
+# now [1, 2, 3, 100]</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+try_to_change(x):</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>    x =
+10  # rebinds local name x, does not affect caller</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>num = 5</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>try_to_change(num)</span></span><span
+lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(num) 
+# still 5</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- In </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>add_element</span></span><span lang=EN>, we
+append to the list, and the original list outside changes. Both the caller and
+function share the same list object.<br>
+- In </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>try_to_change</span></span><span
+lang=EN>, setting </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>x = 10</span></span><span lang=EN> only rebinds the
+local name </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>x</span></span><span
+lang=EN>. The original </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>num</span></span><span lang=EN> outside remains </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>5</span></span><span
+lang=EN>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In summary, a function gets a reference to
+the same object. If it <b>mutates</b> the object, the caller sees the change;
+if it rebinds the parameter name to a new object, that change stays local. This
+nuance often surprises newcomers, so it’s important to remember.</span></p>
+
+<h2><a name=function-call-stack><span lang=EN>Function-Call Stack</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>When a function calls another function
+(or itself), Python uses a <b>stack</b> to keep track of calls. Each call
+creates a new <i>stack frame</i> with its own local variables. For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>def first():</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;Start first&quot;)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+second()</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;End first&quot;)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>def
+second():</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>   
+print(&quot;In second&quot;)</span></span><span lang=EN><br>
+<br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>first()</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>This prints:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>Start first</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>In
+second</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>End
+first</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>Explanation:<br>
+- Calling </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>first()</span></span><span
+lang=EN> pushes a new frame on the stack and executes </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Start
+first&quot;)</span></span><span lang=EN>.<br>
+- Then </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>first</span></span><span
+lang=EN> calls </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>second()</span></span><span lang=EN>. This pushes another frame for </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>second</span></span><span
+lang=EN>. Now the top of the stack is running </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>second</span></span><span lang=EN>, which
+prints </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>In
+second</span></span><span lang=EN>.<br>
+- After </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>second</span></span><span
+lang=EN> returns, its frame is popped off the stack, and control goes back to </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>first</span></span><span
+lang=EN>, which then executes </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>print(&quot;End first&quot;)</span></span><span
+lang=EN>.</span></p>
+
+<p class=MsoBodyText><span lang=EN>This demonstrates that calls are handled in
+last-in, first-out order. The concept of a call stack is essential for
+understanding function execution flow and recursion. Each function call gets
+its own fresh local workspace. As the Python tutorial says, when a function
+calls another (or itself), a new local symbol table is created for that call.
+If a function calls itself (recursion), each call has its own frame with its
+own variables, so they don't interfere with each other.</span></p>
+
+<h2><a name=functional-style-programming><span lang=EN>Functional-Style
+Programming</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>Python supports a functional programming
+style, where you use functions like </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>map()</span></span><span lang=EN>, </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>filter()</span></span><span
+lang=EN>, and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>reduce()</span></span><span lang=EN>, as well as anonymous </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>lambda</span></span><span
+lang=EN> functions, to process data without writing explicit loops. In
+functional programming, you combine small, <i>pure</i> functions to transform
+data. A pure function is one that, given the same input, always returns the
+same output and has no side effects (it doesn’t change global state).</span></p>
+
+<p class=MsoBodyText><span lang=EN>An analogy: imagine a factory assembly line
+where raw items pass through a series of machines, each transforming the item.
+For instance, you could use </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>map()</span></span><span lang=EN> to apply a function
+to every element of a list. The Real Python tutorial explains: <i>“map() is a
+built-in function that allows you to process and transform all the items in an
+iterable without using an explicit for loop... </i></span><span
+class=VerbatimChar><i><span lang=EN style='font-size:11.0pt'>map()</span></i></span><i><span
+lang=EN> is one of the tools that support a functional programming style in
+Python”</span></i><span lang=EN>. For example, suppose we want to square every
+number in a list:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>nums = [1, 2, 3, 4]</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>squares
+= list(map(lambda x: x*x, nums))</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(squares) 
+# [1, 4, 9, 16]</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>lambda x: x*x</span></span><span lang=EN> is
+an anonymous function that returns </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>x*x</span></span><span lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>map(lambda
+x: x*x, nums)</span></span><span lang=EN> applies this function to each item of
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>nums</span></span><span
+lang=EN>.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>list(...)</span></span><span
+lang=EN> turns the result into a list.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Similarly, </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>filter(lambda x: condition, sequence)</span></span><span
+lang=EN> picks out only elements that meet the condition, and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>functools.reduce(func,
+seq)</span></span><span lang=EN> combines elements into a single value. The
+idea is to chain small, single-purpose functions. The benefit, as noted in the
+tutorial, is that programs built this way can be easier to develop, test, and
+debug, since each part is independent. It often leads to concise and readable
+code when dealing with collections of data.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In Python, list comprehensions and generator
+expressions are often used instead of </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>map</span></span><span lang=EN> and </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>filter</span></span><span
+lang=EN> for readability, but the functional tools remain important. The key
+takeaway is: functional-style programming means writing programs by composing
+functions rather than using explicit loops and mutable state. It encourages
+writing functions that return new values rather than modifying things in place.</span></p>
+
+<h2><a name=Xf478a1180ca6cef1219164d5958f62f701cf9ff><span lang=EN>Intro to
+Data Science: Measures of Dispersion</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>This section uses the </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>statistics</span></span><span
+lang=EN> module to calculate how spread out data is. The two main measures are <i>variance</i>
+and <i>standard deviation</i>. The variance of a data set measures how far the
+values are from the mean, on average. The </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>statistics</span></span><span lang=EN> module
+provides </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>pvariance()</span></span><span
+lang=EN> for population variance and </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>variance()</span></span><span lang=EN> for
+sample variance. According to the documentation, variance <i>“is a measure of
+the variability (spread or dispersion) of data. A large variance indicates that
+the data is spread out; a small variance indicates it is clustered closely
+around the mean.”</i></span></p>
+
+<p class=MsoBodyText><span lang=EN>For example:<br>
+<br>
+</span></p>
+
+<p class=SourceCode><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>import statistics</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>data =
+[10, 12, 23, 23, 16]</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>pop_var
+= statistics.pvariance(data)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>pop_std
+= statistics.pstdev(data)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Population
+variance:&quot;, pop_var)</span></span><span lang=EN><br>
+</span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>print(&quot;Population
+standard deviation:&quot;, pop_std)</span></span></p>
+
+<p class=FirstParagraph><span lang=EN>- </span><span class=VerbatimChar><span
+lang=EN style='font-size:11.0pt'>statistics.pvariance(data)</span></span><span
+lang=EN> returns the <b>population variance</b> (σ²) of </span><span
+class=VerbatimChar><span lang=EN style='font-size:11.0pt'>data</span></span><span
+lang=EN>. It computes the average of squared differences from the mean.<br>
+- </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>statistics.pstdev(data)</span></span><span
+lang=EN> returns the <b>population standard deviation</b> (σ), which is the
+square root of the population variance. Standard deviation is in the same units
+as the data and is often easier to interpret.</span></p>
+
+<p class=MsoBodyText><span lang=EN>In practical terms, if these numbers were
+test scores, variance and standard deviation tell us how consistent the scores
+are around the average. A low standard deviation means most scores are near the
+mean; a high standard deviation means they are spread out. Using these built-in
+functions saves us from coding the formulas ourselves.</span></p>
+
+<h2><a name=wrap-up><span lang=EN>Wrap-Up</span></a></h2>
+
+<p class=FirstParagraph><span lang=EN>In this chapter, we created custom
+functions and organized our code into reusable building blocks. We covered the
+full journey: writing </span><span class=VerbatimChar><span lang=EN
+style='font-size:11.0pt'>def</span></span><span lang=EN> statements, calling
+functions, using parameters and return values, and employing variations like
+default and keyword arguments. We also used Python’s standard library modules
+such as </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>random</span></span><span
+lang=EN>, </span><span class=VerbatimChar><span lang=EN style='font-size:11.0pt'>math</span></span><span
+lang=EN>, and </span><span class=VerbatimChar><span lang=EN style='font-size:
+11.0pt'>statistics</span></span><span lang=EN> to add powerful features
+(randomness, advanced math, data analysis) to our programs without extra work.</span></p>
+
+<p class=MsoBodyText><span lang=EN>We explored more advanced topics too:
+methods (functions attached to objects) and scope rules (how local and global
+variables work); we took a deeper dive into how Python passes arguments (by
+object reference) and how the import system works. We also examined the
+function-call stack to see how each call gets its own workspace.</span></p>
+
+<p class=MsoBodyText><span lang=EN>Examples, analogies, and line-by-line
+explanations reinforced every concept. Remember, writing clear, well-named
+functions is a key software engineering practice: it keeps code DRY (Don’t
+Repeat Yourself), makes it easier to test and maintain, and enhances
+readability. You should now be able to define functions, give them meaningful
+names, and use them effectively. The next chapter will build on these
+foundations, introducing more data structures and even showing how functions
+can call themselves (recursion), preparing you to write even more powerful
+Python programs.</span></p>
+
+<div class=MsoNormal align=center style='text-align:center'><span lang=EN>
+
+<hr size=0 width="100%" align=center>
+
+</span></div>
+
+</div>
+
+</body>
+
+</html>
