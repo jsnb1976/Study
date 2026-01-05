@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CarrPod Solar Monitor | Heliophysics & Aegis Alert System</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Google Fonts: Orbitron for Sci-Fi feel -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- Chosen Palette: CarrPod Spectrum & Deep Space --- */
+        :root {
+            --space-black: #050508;
+            --sun-core: #FFD700; /* Gold */
+            --sun-corona: #FF4500; /* OrangeRed */
+            --earth-ocean: #1E90FF; /* DodgerBlue */
+            --aegis-chrome: #E0E0E0; /* Metal */
+            --alert-red: #DC143C;
+            --data-cyan: #00CED1;
+            /* Color Wheel Accents */
+            --cw-red: #FF0000;
+            --cw-orange: #FFA500;
+            --cw-yellow: #FFFF00;
+            --cw-green: #008000;
+            --cw-blue: #0000FF;
+            --cw-purple: #800080;
+        }
+
+        body {
+            background-color: var(--space-black);
+            color: var(--aegis-chrome);
+            font-family: 'Rajdhani', sans-serif;
+            overflow: hidden; /* Prevent scroll, handled by canvas zoom */
+            margin: 0;
+            padding: 0;
+        }
+
+        h1, h2, h3, .hud-text {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+        }
+
+        /* --- Chart Container Logic --- */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+        }
+
+        /* --- Custom Scrollbar for Logs --- */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 3px;
+        }
+
+        /* --- Logo CSS Approximation --- */
+        .carrpod-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--cw-red), 
+                var(--cw-orange), 
+                var(--cw-yellow), 
+                var(--cw-green), 
+                var(--cw-blue), 
+                var(--cw-purple), 
+                var(--cw-red)
+            );
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+        .carrpod-logo::after {
+            content: 'CP';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #000;
+            width: 70%;
+            height: 70%;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: white;
+            letter-spacing: -1px;
+        }
+
+        /* --- Three Pane Overlay Grid --- */
+        .pane-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            height: 100vh;
+            width: 100vw;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none; /* Let clicks pass to canvas */
+        }
+
+        .pane {
+            padding: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: auto; /* Re-enable UI clicks */
+            background: linear-gradient(180deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.6) 100%);
+        }
+
+        .pane:last-child {
+            border-right: none;
+        }
+
+        /* CME Warning Animation */
+        @keyframes flash-alert {
+            0% { box-shadow: inset 0 0 0 0 transparent; }
+            50% { box-shadow: inset 0 0 50px 20px rgba(220, 20, 60, 0.5); }
+            100% { box-shadow: inset 0 0 0 0 transparent; }
+        }
+        .alert-active {
+            animation: flash-alert 1s infinite;
+        }
+        
+        #canvas-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Application Structure Plan:
+         1. Background: Full-screen Three.js Canvas.
+            - Uses 'TGPU' physics logic for particle flow.
+            - Earth (Left), Condensed Space (Center), Sun (Right).
+         2. Foreground: CSS Grid 3-column overlay.
+            - Left Col: Earth Telemetry & Aegis Warnings.
+            - Center Col: Flux/Physics Monitors.
+            - Right Col: Solar Controls & CME Trigger.
+         3. Logic:
+            - Button triggers CME -> Updates Physics (Speed/Density) -> Updates Charts -> Triggers Earth Effects.
+    -->
+
+    <!-- Three.js Canvas Container -->
+    <div id="canvas-container"></div>
+
+    <!-- UI Overlay -->
+    <div class="pane-grid">
+        
+        <!-- PANE 1: EARTH & AEGIS METRICS -->
+        <div class="pane border-r border-slate-700/50" id="earth-pane">
+            <div class="flex flex-col gap-4">
+                <div class="bg-black/40 p-4 rounded border-l-4 border-blue-500">
+                    <h2 class="text-2xl text-blue-300">Terra Status</h2>
+                    <p class="text-sm text-gray-400">Geomagnetic Shielding</p>
+                    <div class="mt-2 text-3xl font-bold font-orbitron text-white" id="shield-val">100%</div>
+                </div>
+
+                <div id="aegis-warning" class="hidden bg-red-900/80 p-4 rounded border border-red-500 backdrop-blur-md">
+                    <h3 class="text-xl text-red-100 flex items-center gap-2">
+                        <span class="text-2xl">⚠️</span> AEGIS ALERT
+                    </h3>
+                    <ul class="text-xs text-red-200 mt-2 space-y-2 list-disc pl-4">
+                        <li><strong>Anomalous Thermal Event</strong> detected.</li>
+                        <li>Risk of <strong>Selective Metallurgical Liquefaction</strong> in engines.</li>
+                        <li><strong>Geomagnetic Conductivity</strong> limits exceeded in coastal zones.</li>
+                        <li>Seek <strong>Blue/Chromatic</strong> shelter structures.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <h4 class="text-xs uppercase tracking-widest mb-1 text-gray-400">Magnetometer (Bz)</h4>
+                <div class="chart-container">
+                    <canvas id="bzChart"></canvas>
+                </div>
+                <p class="text-[10px] mt-1 text-gray-500">Vertical IMF Component (nT)</p>
+            </div>
+        </div>
+
+        <!-- PANE 2: CONDENSED SPACE & FLUX -->
+        <div class="pane border-r border-slate-700/50">
+            <div class="text-center pt-4">
+                <h1 class="text-3xl font-black tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-500 opacity-80">CARRPOD</h1>
+                <p class="text-xs uppercase tracking-[0.3em] text-cyan-300">Space Weather Monitor</p>
+            </div>
+
+            <div class="flex-1 flex items-center justify-center pointer-events-none">
+                <!-- Center view is mostly for the 3D physics stream -->
+                <div class="text-center opacity-30">
+                    <p class="text-xs">INTERPLANETARY MAGNETIC FIELD</p>
+                    <p class="text-[10px]">Condensed Scale: 1AU ≈ 20 Units</p>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <h4 class="text-xs uppercase tracking-widest mb-1 text-gray-400">Proton Density</h4>
+                <div class="chart-container">
+                    <canvas id="densityChart"></canvas>
+                </div>
+                <p class="text-[10px] mt-1 text-gray-500">Particles per cm³ (Orange) | Speed (Cyan)</p>
+            </div>
+        </div>
+
+        <!-- PANE 3: SOLAR CONTROLS -->
+        <div class="pane">
+            <div class="flex justify-between items-start">
+                <div></div> <!-- Spacer -->
+                <div class="flex flex-col items-end gap-2">
+                    <div class="carrpod-logo" title="CarrPod Logo"></div>
+                    <div class="text-right">
+                        <h2 class="text-2xl text-yellow-400">SOLARIS</h2>
+                        <p class="text-sm text-gray-400">Class: G2V Yellow Dwarf</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col gap-4 mt-10">
+                <div class="bg-black/40 p-4 rounded border-r-4 border-yellow-500 text-right">
+                    <h3 class="text-lg text-yellow-100">Forecast Model</h3>
+                    <p class="text-xs text-gray-400 mb-2">Based on Monistic Architecture</p>
+                    
+                    <div class="flex justify-end gap-2 mb-2">
+                        <div class="text-xs bg-gray-800 px-2 py-1 rounded">X-Ray: <span id="xray-val" class="text-green-400">A1.0</span></div>
+                        <div class="text-xs bg-gray-800 px-2 py-1 rounded">Kp: <span id="kp-val" class="text-green-400">2</span></div>
+                    </div>
+
+                    <button id="cme-btn" class="w-full py-3 bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold rounded shadow-lg shadow-orange-900/50 transition-all active:scale-95 uppercase tracking-wider border border-red-400">
+                        Initiate CME Simulation
+                    </button>
+                    <p class="text-[10px] mt-2 text-gray-500 italic">"Watch the Magnetic Fluxes"</p>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <h4 class="text-xs uppercase tracking-widest mb-1 text-gray-400">Solar Wind Speed</h4>
+                <div class="chart-container">
+                    <canvas id="windChart"></canvas>
+                </div>
+                <p class="text-[10px] mt-1 text-gray-500">Velocity (km/s)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualization & Content Choices:
+         - Charts: Chart.js selected for real-time update capability to mimic "SpaceWeatherNews" dashboards.
+         - 3D Engine: Three.js used to render Earth, Sun, and Particles.
+         - Particle System: Adapted 'Subatomic Worldline' logic. Particles have 'lifespan' (entropy) and speed.
+         - Layout: 3-Column Grid overlaying a single Canvas. This provides the "3 Pane" requested look while maintaining a unified 3D spatial context for the physics to flow across.
+    -->
+
+    <script>
+        // --- 1. Three.js Setup & Physics Engine ---
+        const scene = new THREE.Scene();
+        // Fog for depth in "condensed space"
+        scene.fog = new THREE.FogExp2(0x050508, 0.02);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(0, 0, 25);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.enablePan = false;
+        controls.minDistance = 10;
+        controls.maxDistance = 50;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x333333);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.PointLight(0xffaa00, 2, 100);
+        sunLight.position.set(10, 0, 0); // Light comes from Sun position
+        scene.add(sunLight);
+
+        // --- 2. Celestial Bodies ---
+
+        // EARTH (Left Pane: x = -8)
+        const earthGeometry = new THREE.SphereGeometry(3, 32, 32);
+        const earthMaterial = new THREE.MeshPhongMaterial({
+            color: 0x2233ff,
+            emissive: 0x112244,
+            specular: 0x111111,
+            shininess: 10,
+            map: null, // Procedural noise would be better but keeping simple without external textures
+            bumpScale: 0.05
+        });
+        // Create simple texture canvas for Earth
+        function createNoiseTexture(color1, color2) {
+            const size = 512;
+            const canvas = document.createElement('canvas');
+            canvas.width = size;
+            canvas.height = size;
+            const ctx = canvas.getContext('2d');
+            ctx.fillStyle = color1;
+            ctx.fillRect(0,0,size,size);
+            for(let i=0; i<400; i++){
+                ctx.fillStyle = color2;
+                const x = Math.random()*size;
+                const y = Math.random()*size;
+                const r = Math.random()*50;
+                ctx.beginPath();
+                ctx.arc(x,y,r,0,Math.PI*2);
+                ctx.fill();
+            }
+            const tex = new THREE.CanvasTexture(canvas);
+            return tex;
+        }
+        earthMaterial.map = createNoiseTexture('#001133', '#1E90FF'); // Dark ocean, bright clouds/land
+        const earth = new THREE.Mesh(earthGeometry, earthMaterial);
+        earth.position.set(-8, 0, 0);
+        scene.add(earth);
+
+        // Earth Shield (Magnetosphere) - Invisible mostly, glows on hit
+        const shieldGeo = new THREE.SphereGeometry(3.5, 32, 32);
+        const shieldMat = new THREE.MeshBasicMaterial({
+            color: 0x00ffff,
+            transparent: true,
+            opacity: 0.1,
+            side: THREE.DoubleSide,
+            blending: THREE.AdditiveBlending
+        });
+        const shield = new THREE.Mesh(shieldGeo, shieldMat);
+        shield.position.set(-8, 0, 0);
+        scene.add(shield);
+
+        // SUN (Right Pane: x = 8)
+        const sunGeometry = new THREE.SphereGeometry(4, 32, 32);
+        const sunMaterial = new THREE.MeshBasicMaterial({
+            color: 0xffaa00,
+        });
+        // Sun texture
+        sunMaterial.map = createNoiseTexture('#FF4500', '#FFD700'); 
+        const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+        sun.position.set(8, 0, 0);
+        scene.add(sun);
+
+        // Sun Glow (Sprite)
+        const spriteMaterial = new THREE.SpriteMaterial({ 
+            map: new THREE.CanvasTexture((function(){
+                const c = document.createElement('canvas'); c.width=64; c.height=64;
+                const ctx = c.getContext('2d');
+                const g = ctx.createRadialGradient(32,32,0,32,32,32);
+                g.addColorStop(0, 'rgba(255, 200, 0, 1)');
+                g.addColorStop(0.5, 'rgba(255, 100, 0, 0.5)');
+                g.addColorStop(1, 'rgba(0,0,0,0)');
+                ctx.fillStyle = g; ctx.fillRect(0,0,64,64);
+                return c;
+            })()), 
+            color: 0xffaa00, blending: THREE.AdditiveBlending 
+        });
+        const sunGlow = new THREE.Sprite(spriteMaterial);
+        sunGlow.scale.set(12, 12, 1);
+        sun.add(sunGlow);
+
+        // --- 3. Physics Engine (Monistic Worldlines / Solar Wind) ---
+        // Adapting the user's TGPU concept: Particles flow from Source (Sun) to Sink (Earth)
+        
+        const particleCount = 2000;
+        const particlesGeo = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+        const velocities = new Float32Array(particleCount); // Speed multiplier
+        const lifespans = new Float32Array(particleCount); // Entropy
+
+        for(let i=0; i<particleCount; i++) {
+            // Initial positions: Start inside Sun or along path
+            resetParticle(i, true);
+        }
+
+        particlesGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        
+        const particleMat = new THREE.PointsMaterial({
+            color: 0xffffff,
+            size: 0.15,
+            transparent: true,
+            opacity: 0.8,
+            vertexColors: false
+        });
+
+        const particleSystem = new THREE.Points(particlesGeo, particleMat);
+        scene.add(particleSystem);
+
+        // Global Physics State
+        let cmeActive = false;
+        let windSpeedBase = 0.05;
+        let windSpeedMultiplier = 1.0;
+        
+        function resetParticle(i, randomX = false) {
+            // Start at Sun surface + random offset
+            const theta = Math.random() * Math.PI * 2;
+            const phi = Math.random() * Math.PI;
+            const r = 4 + Math.random() * 0.5; // Sun Radius + offset
+            
+            // Bias towards Earth direction (Negative X)
+            // Sun is at x=8, Earth at x=-8. Direction is roughly (-1, 0, 0)
+            
+            // Random start point near sun
+            let sx = 8 + (Math.random() - 0.5) * 2;
+            let sy = (Math.random() - 0.5) * 6;
+            let sz = (Math.random() - 0.5) * 6;
+
+            if (randomX) {
+                sx = 8 - Math.random() * 16; // Distribute across space initially
+            }
+
+            positions[i*3] = sx;
+            positions[i*3+1] = sy;
+            positions[i*3+2] = sz;
+
+            velocities[i] = 1.0 + Math.random() * 0.5; // Variation
+            lifespans[i] = 100; // 100% life
+        }
+
+        // --- 4. Chart.js Data Visualizations ---
+        
+        // Helper to create chart config
+        function createChart(ctx, label, color, min, max) {
+            return new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: Array(20).fill(''),
+                    datasets: [{
+                        label: label,
+                        data: Array(20).fill(min),
+                        borderColor: color,
+                        backgroundColor: color + '33', // Alpha
+                        borderWidth: 1.5,
+                        pointRadius: 0,
+                        fill: true,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        x: { display: false },
+                        y: { 
+                            display: true, 
+                            suggestedMin: min, 
+                            suggestedMax: max,
+                            grid: { color: '#333' },
+                            ticks: { color: '#888', font: {size: 9} }
+                        }
+                    },
+                    animation: false
+                }
+            });
+        }
+
+        const windChart = createChart(document.getElementById('windChart').getContext('2d'), 'Speed', '#00CED1', 300, 800);
+        const densityChart = createChart(document.getElementById('densityChart').getContext('2d'), 'Density', '#FFA500', 0, 50);
+        const bzChart = createChart(document.getElementById('bzChart').getContext('2d'), 'Bz', '#FF0000', -20, 20);
+
+        // --- 5. Application Logic ---
+
+        let frame = 0;
+        let earthDamage = 0;
+
+        function animate() {
+            requestAnimationFrame(animate);
+            frame++;
+
+            // Rotate Bodies
+            earth.rotation.y += 0.002;
+            sun.rotation.y += 0.001;
+            sunGlow.rotation.z -= 0.001;
+            shield.rotation.y -= 0.003;
+
+            // Physics Update (The "Monistic Engine")
+            const positionsArray = particleSystem.geometry.attributes.position.array;
+            
+            // CME Logic
+            let currentSpeed = windSpeedBase * windSpeedMultiplier;
+            let particleColor = 0xffffff;
+
+            if (cmeActive) {
+                // CME Pulse effect
+                if (windSpeedMultiplier < 5.0) windSpeedMultiplier += 0.1;
+                particleColor = 0xFF4500; // Red/Orange particles
+                particleMat.color.setHex(particleColor);
+                
+                // Aegis Report Effect: Earth shield glows
+                shield.material.opacity = 0.4 + Math.sin(frame * 0.2) * 0.2;
+                shield.material.color.setHex(0xff0000); // Danger Red
+                
+                // Update text
+                document.getElementById('xray-val').innerText = "X9.9 (FLARE)";
+                document.getElementById('xray-val').className = "text-red-500 blink";
+                document.getElementById('kp-val').innerText = "8+";
+                document.getElementById('kp-val').className = "text-red-500 blink";
+                document.getElementById('shield-val').innerText = "FAILING";
+                document.getElementById('shield-val').className = "text-3xl font-bold font-orbitron text-red-500 animate-pulse";
+                document.getElementById('aegis-warning').classList.remove('hidden');
+                document.body.classList.add('alert-active');
+            } else {
+                // Normal
+                if (windSpeedMultiplier > 1.0) windSpeedMultiplier -= 0.05;
+                particleMat.color.setHex(0xaaaaaa);
+                shield.material.opacity = 0.05;
+                shield.material.color.setHex(0x00ffff);
+
+                document.getElementById('xray-val').innerText = "A1.0";
+                document.getElementById('xray-val').className = "text-green-400";
+                document.getElementById('kp-val').innerText = "2";
+                document.getElementById('kp-val').className = "text-green-400";
+                document.getElementById('shield-val').innerText = "100%";
+                document.getElementById('shield-val').className = "text-3xl font-bold font-orbitron text-white";
+                document.getElementById('aegis-warning').classList.add('hidden');
+                document.body.classList.remove('alert-active');
+            }
+
+            // Move Particles
+            for(let i=0; i<particleCount; i++) {
+                const px = positionsArray[i*3];
+                const py = positionsArray[i*3+1];
+                const pz = positionsArray[i*3+2];
+
+                // Flow from Sun (8) to Earth (-8)
+                // Add noise/turbulence
+                const noiseY = Math.sin(px * 0.5 + frame * 0.01) * 0.02;
+                
+                positionsArray[i*3] -= (currentSpeed * velocities[i]); // Move left
+                positionsArray[i*3+1] += noiseY;
+
+                // Collision with Earth
+                const distToEarth = Math.sqrt(Math.pow(px - (-8), 2) + Math.pow(py, 2) + Math.pow(pz, 2));
+                
+                if (distToEarth < 3.5) {
+                    // Hit shield
+                    resetParticle(i);
+                } else if (px < -15) {
+                    // Missed Earth, flew past
+                    resetParticle(i);
+                }
+            }
+
+            particleSystem.geometry.attributes.position.needsUpdate = true;
+            controls.update();
+            renderer.render(scene, camera);
+
+            // Update Charts (Slow down update rate)
+            if (frame % 10 === 0) {
+                updateCharts(cmeActive);
+            }
+        }
+
+        // Mock Data Generator for SpaceWeatherNews style graphs
+        function updateCharts(isCME) {
+            const wind = windChart.data.datasets[0].data;
+            const dens = densityChart.data.datasets[0].data;
+            const bz = bzChart.data.datasets[0].data;
+
+            // Shift data
+            wind.shift(); dens.shift(); bz.shift();
+
+            if (isCME) {
+                // CME Values: Fast speed, High density, Negative Bz (Danger)
+                wind.push(800 + Math.random() * 200);
+                dens.push(40 + Math.random() * 20);
+                bz.push(-15 - Math.random() * 5); // South pointing Bz is dangerous
+            } else {
+                // Normal Values
+                wind.push(350 + Math.random() * 50);
+                dens.push(5 + Math.random() * 5);
+                bz.push(Math.random() * 10 - 5); // Fluctuating around 0
+            }
+
+            windChart.update();
+            densityChart.update();
+            bzChart.update();
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        document.getElementById('cme-btn').addEventListener('click', () => {
+            if (cmeActive) return;
+            cmeActive = true;
+            
+            // CME Sequence Duration
+            setTimeout(() => {
+                cmeActive = false;
+            }, 8000); // 8 second simulation
+        });
+
+        animate();
+    </script>
+</body>
+</html>
