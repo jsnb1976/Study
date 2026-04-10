@@ -1,3 +1,1 @@
-# Study
-Study Bibles
-Tardigradia Carrington Storm Motors Safe Pod Engineering Company
+# Tardigradia Carrington Storm Motors Safe Pod Engineering Company
