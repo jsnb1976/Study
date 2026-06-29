@@ -7,7 +7,16 @@ body {
     background-position: center;  /* Center the background image */
     background-repeat: no-repeat;
     width: 100vw;
+    /* V2: dark base so canvas blends correctly */
+    background-color: #020208;
 }
+
+/* V2: V1 DOM elements sit above biome canvas */
+#sidebar    { position: relative; z-index: 15; }
+#main-frame { position: relative; z-index: 15; }
+#details    { position: relative; z-index: 15; }
+#nav-bar    { position: relative; z-index: 15; }
+#menu       { position: relative; z-index: 16; }
   
 
     @keyframes moveUp {

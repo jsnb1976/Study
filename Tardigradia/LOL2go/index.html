@@ -3,95 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tardigradia : land 'o' lil</title>
+    <title>Tardigradia : land 'o' lil — v2.0</title>
+
+    <!-- ── V1 Stylesheet ── -->
     <link rel="stylesheet" href="css/styles.css">
- 
+
+    <!-- ── V2 Stylesheets ── -->
+    <link rel="stylesheet" href="css/v2/biome.css">
+    <link rel="stylesheet" href="css/v2/ui.css">
 </head>
 <body>
 
-    <script src="js/games2024/g0001/init/data_bubbles.js"></script>
-    <script src="js/games2024/g0001/bubbles/bubbles.js"></script>
+<!-- ══════════════════════════════════════════════════════
+     V2 BIOME CANVAS LAYERS
+     trail-canvas: persistent fading trail layer (z:0)
+     biome-canvas: live rendered creatures (z:1)
+     ══════════════════════════════════════════════════════ -->
+<canvas id="trail-canvas"></canvas>
+<canvas id="biome-canvas"></canvas>
 
+<!-- ── save flash overlay ── -->
+<div id="save-flash"></div>
 
-    <script src="js/games2024/g0004/init/data_background.js"></script>
-    <script src="js/games2024/g0004/background/background.js"></script>
-    <script> setRandomBackground(); </script>
+<!-- ── toast notification container ── -->
+<div id="toast-container"></div>
 
-    <div id="sidebar"></div>
-    <div id="main-frame" top>
+<!-- ══════════════════════════════════════════════════════
+     V1 STRUCTURE (preserved — sits above canvas via z-index)
+     ══════════════════════════════════════════════════════ -->
+<div id="sidebar"></div>
+<div id="main-frame" top>
     <img id="main-image" src="images/clearpixle.gif" alt="Select a picture">
-    </div>
-    <div id="details">
-		<center>
-		<H1>
-Tardi</br>
+</div>
+<div id="details">
+    <center>
+    <H1>Tardi</br>
 gradia</br>
 land</br>
 'o'</br>
-	lil</h1></center>
+    lil</h1></center>
+</div>
+<div id="nav-bar" class="nav-bar">Back</div>
 
-    </div>
-    <div id="nav-bar" class="nav-bar">Back</div>
-    <script src="js/games2024/g0001/init/data_bubbles.js"></script>
-    <script src="js/games2024/g0001/bubbles/bubbles.js"></script>
+<!-- ══════════════════════════════════════════════════════
+     V1 GAME SCRIPTS (unchanged, load order preserved)
+     ══════════════════════════════════════════════════════ -->
 
+<!-- g0001: Bubbles -->
+<script src="js/games2024/g0001/init/data_bubbles.js"></script>
+<script src="js/games2024/g0001/bubbles/bubbles.js"></script>
 
-    <script src="js/games2024/g0002/init/data_creatures.js"></script>
-    <script src="js/games2024/g0002/init/loadItems.js"></script>
-    <script src="js/games2024/g0002/creature/slideshow/slideshow.js"></script>
+<!-- g0004: Background -->
+<script src="js/games2024/g0004/init/data_background.js"></script>
+<script src="js/games2024/g0004/background/background.js"></script>
+<script> setRandomBackground(); </script>
 
-    <script src="js/index/menu.js"></script>
-    <script src="js/index/buttons.js"></script>
+<!-- g0002: Creatures data + slideshow -->
+<script src="js/games2024/g0002/init/data_creatures.js"></script>
+<script src="js/games2024/g0002/init/loadItems.js"></script>
+<script src="js/games2024/g0002/creature/slideshow/slideshow.js"></script>
 
-    <script src="js/games2024/g0006/speech/speech.js"></script>
+<!-- Menus & buttons -->
+<script src="js/index/menu.js"></script>
+<script src="js/index/buttons.js"></script>
 
+<!-- g0006: Speech -->
+<script src="js/games2024/g0006/speech/speech.js"></script>
 
-    <script src="js/games2024/g0008/init/logo_data.js"></script>
-	<script src="js/games2024/g0008/logo/logoshow/logoshow.js"></script>
+<!-- g0008: Logoshow -->
+<script src="js/games2024/g0008/init/logo_data.js"></script>
+<script src="js/games2024/g0008/logo/logoshow/logoshow.js"></script>
 
-    <script src="js/games2024/g0009/init/stencil_data.js"></script>
-	<script src="js/games2024/g0009/stencil/stencilshow/stencilshow.js"></script>
-		
-    <script src="js/games2024/g0002/creature/icons/movingIcons.js"></script>
-    <script src="js/games2024/g0002/creature/icons/randomIcons.js"></script>
-    <script src="js/games2024/g0002/creature/icons/spinningIcons.js"></script>
+<!-- g0009: Stencilshow -->
+<script src="js/games2024/g0009/init/stencil_data.js"></script>
+<script src="js/games2024/g0009/stencil/stencilshow/stencilshow.js"></script>
 
+<!-- g0002: Moving & spinning icons (retained for legacy menu buttons) -->
+<script src="js/games2024/g0002/creature/icons/movingIcons.js"></script>
+<script src="js/games2024/g0002/creature/icons/randomIcons.js"></script>
+<script src="js/games2024/g0002/creature/icons/spinningIcons.js"></script>
 
-    <script src="js/games2024/g0003/source/crowdsource.js"></script> 
+<!-- g0003: Crowdsource -->
+<script src="js/games2024/g0003/source/crowdsource.js"></script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-		
-            loadItems(data.phyla, 'phyla');
-	    logo_loadItems(data.ENGLISH, 'ENGLISH');
-	    stencil_loadItems(data.STENCIL, 'STENCIL');
+<!-- ══════════════════════════════════════════════════════
+     V2 GAME SCRIPTS — load order matters
+     ══════════════════════════════════════════════════════ -->
 
-            createFloatingBubbles(bubbleImages);
-		
-			
-			
-			
-			
-            document.getElementById('release-microbes-button').addEventListener('click', () => {
-                const allImageUrls = createRandomIcons();
-                createMovingIcons(allImageUrls);
-            });
+<!-- 1. Config & species data (must come first) -->
+<script src="js/v2/config/species_data.js"></script>
 
-            document.getElementById('spin-microbes-button').addEventListener('click', () => {
-                const allImageUrls = createRandomIcons();
-                createSpinningIcons(allImageUrls);
-            });
+<!-- 2. Core simulation modules -->
+<script src="js/v2/core/physics.js"></script>
+<script src="js/v2/core/creature.js"></script>
+<script src="js/v2/core/ecosystem.js"></script>
+<script src="js/v2/core/biome_engine.js"></script>
 
-            document.getElementById('founding-crowdsource-button').addEventListener('click', () => {
-                loadCrowdsourcePage('main-frame');
-            });
-            
-            document.getElementById('download-pdf-button').addEventListener('click', () => {
-                window.location.href = 'files/Tardigradia_land_o_lil_Multiphase_Vision_2024.pdf';
-            });
+<!-- 3. UI modules -->
+<script src="js/v2/ui/screensaver.js"></script>
+<script src="js/v2/ui/save_load.js"></script>
+<script src="js/v2/ui/pov_camera.js"></script>
+<script src="js/v2/ui/hud.js"></script>
+<script src="js/v2/ui/opening_screen.js"></script>
 
-            
-        });
-    </script>
+<!-- ══════════════════════════════════════════════════════
+     BOOTSTRAP
+     ══════════════════════════════════════════════════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // ── V1 init (slideshow, bubbles, menus) ──────────────────
+    loadItems(data.phyla, 'phyla');
+    logo_loadItems(data.ENGLISH, 'ENGLISH');
+    stencil_loadItems(data.STENCIL, 'STENCIL');
+    createFloatingBubbles(bubbleImages);
+
+    // V1 button bindings (preserved)
+    document.getElementById('release-microbes-button')?.addEventListener('click', () => {
+        const allImageUrls = createRandomIcons();
+        createMovingIcons(allImageUrls);
+    });
+
+    document.getElementById('spin-microbes-button')?.addEventListener('click', () => {
+        const allImageUrls = createRandomIcons();
+        createSpinningIcons(allImageUrls);
+    });
+
+    document.getElementById('founding-crowdsource-button')?.addEventListener('click', () => {
+        loadCrowdsourcePage('main-frame');
+    });
+
+    document.getElementById('download-pdf-button')?.addEventListener('click', () => {
+        window.location.href = 'files/Tardigradia_land_o_lil_Multiphase_Vision_2024.pdf';
+    });
+
+    // ── V2 init: show opening screen ─────────────────────────
+    // Opening screen calls BiomeEngine.init() when user clicks Begin.
+    OpeningScreen.init();
+
+    // ── V1 sidebar z-index fix: ensure it sits above biome canvas ──
+    const sidebar = document.getElementById('sidebar');
+    if (sidebar) sidebar.style.zIndex = '15';
+    const details = document.getElementById('details');
+    if (details) details.style.zIndex = '15';
+    const navBar  = document.getElementById('nav-bar');
+    if (navBar)   navBar.style.zIndex  = '15';
+
+});
+</script>
+
 </body>
 </html>
