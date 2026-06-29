@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tardigradia 2.0 : land 'o' lil — Universe in a Droplet</title>
+
+  <!-- V2 Stylesheets (dark-mode base + biome canvas + HUD) -->
+  <link rel="stylesheet" href="css/styles_v2.css">
+  <link rel="stylesheet" href="css/v2/biome.css">
+  <link rel="stylesheet" href="css/v2/ui.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════
+     CANVAS LAYERS
+     trail-canvas  z:0  — fading trail persistence
+     biome-canvas  z:1  — live creature render + glass tube
+     ══════════════════════════════════════════════════════════ -->
+<canvas id="trail-canvas"></canvas>
+<canvas id="biome-canvas"></canvas>
+
+<!-- Utility overlays -->
+<div id="save-flash"></div>
+<div id="toast-container"></div>
+
+<!-- ══════════════════════════════════════════════════════════
+     V1 PAGE STRUCTURE (preserved — sits above canvas)
+     ══════════════════════════════════════════════════════════ -->
+<div id="sidebar"></div>
+<div id="main-frame" top>
+  <img id="main-image" src="images/clearpixle.gif" alt="Select a picture">
+</div>
+<div id="details">
+  <center>
+    <H1>Tardi<br>gradia<br>land<br>'o'<br>lil</H1>
+  </center>
+</div>
+<div id="nav-bar" class="nav-bar">Back</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     V1 DATA + SCRIPT MODULES (unchanged, load order preserved)
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- g0001: Bubbles — these become physics-coupled in v2 -->
+<script src="js/games2024/g0001/init/data_bubbles.js"></script>
+<script src="js/games2024/g0001/bubbles/bubbles.js"></script>
+
+<!-- g0004: Background random image -->
+<script src="js/games2024/g0004/init/data_background.js"></script>
+<script src="js/games2024/g0004/background/background.js"></script>
+<script> setRandomBackground(); </script>
+
+<!-- g0002: Creature data (icons, species images) — feeds biome engine -->
+<script src="js/games2024/g0002/init/data_creatures.js"></script>
+<script src="js/games2024/g0002/init/loadItems.js"></script>
+<script src="js/games2024/g0002/creature/slideshow/slideshow.js"></script>
+
+<!-- Index menus and buttons -->
+<script src="js/index/menu.js"></script>
+<script src="js/index/buttons.js"></script>
+
+<!-- Speech -->
+<script src="js/games2024/g0006/speech/speech.js"></script>
+
+<!-- Logoshow / Stencilshow -->
+<script src="js/games2024/g0008/init/logo_data.js"></script>
+<script src="js/games2024/g0008/logo/logoshow/logoshow.js"></script>
+<script src="js/games2024/g0009/init/stencil_data.js"></script>
+<script src="js/games2024/g0009/stencil/stencilshow/stencilshow.js"></script>
+
+<!-- Moving / spinning icons (legacy, available via buttons) -->
+<script src="js/games2024/g0002/creature/icons/movingIcons.js"></script>
+<script src="js/games2024/g0002/creature/icons/randomIcons.js"></script>
+<script src="js/games2024/g0002/creature/icons/spinningIcons.js"></script>
+
+<!-- Crowdsource -->
+<script src="js/games2024/g0003/source/crowdsource.js"></script>
+
+<!-- ══════════════════════════════════════════════════════════
+     V2 MODULES  (strict load order)
+     ══════════════════════════════════════════════════════════ -->
+
+<!-- 1. Species + trophic config (first — all others depend on it) -->
+<script src="js/v2/config/species_data.js"></script>
+
+<!-- 2. Core simulation -->
+<script src="js/v2/core/physics.js"></script>
+<script src="js/v2/core/creature.js"></script>
+<script src="js/v2/core/ecosystem.js"></script>
+<script src="js/v2/core/biome_engine.js"></script>
+
+<!-- 3. UI -->
+<script src="js/v2/ui/screensaver.js"></script>
+<script src="js/v2/ui/save_load.js"></script>
+<script src="js/v2/ui/pov_camera.js"></script>
+<script src="js/v2/ui/hud.js"></script>
+<script src="js/v2/ui/opening_screen.js"></script>
+
+<!-- ══════════════════════════════════════════════════════════
+     BOOTSTRAP
+     ══════════════════════════════════════════════════════════ -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── V1 init (preserves existing site features) ─────────────
+  if (typeof loadItems === 'function')       loadItems(data.phyla, 'phyla');
+  if (typeof logo_loadItems === 'function')  logo_loadItems(data.ENGLISH, 'ENGLISH');
+  if (typeof stencil_loadItems === 'function') stencil_loadItems(data.STENCIL, 'STENCIL');
+  if (typeof createFloatingBubbles === 'function') createFloatingBubbles();
+
+  // V1 button event wiring (safe for missing elements)
+  const safeBtn = (id, fn) => {
+    const el = document.getElementById(id);
+    if (el) el.addEventListener('click', fn);
+  };
+  safeBtn('release-microbes-button', () => {
+    const urls = createRandomIcons(); createMovingIcons(urls);
+  });
+  safeBtn('spin-microbes-button', () => {
+    const urls = createRandomIcons(); createSpinningIcons(urls);
+  });
+  safeBtn('founding-crowdsource-button', () => loadCrowdsourcePage('main-frame'));
+  safeBtn('download-pdf-button', () => {
+    window.location.href = 'files/Tardigradia_land_o_lil_Multiphase_Vision_2024.pdf';
+  });
+
+  // ── V2 init: show configuration splash ─────────────────────
+  // OpeningScreen calls BiomeEngine.init(params) on "Begin Biome".
+  OpeningScreen.init();
+
+  // Ensure v1 DOM panels sit above biome canvas (z-index guard)
+  ['sidebar','main-frame','details','nav-bar'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el && !el.style.zIndex) el.style.zIndex = '15';
+  });
+
+});
+</script>
+
+</body>
+</html>
